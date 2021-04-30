@@ -48,7 +48,7 @@ namespace covidSim.Services
             var goingWalk = random.NextDouble() < 0.005;
             if (!goingWalk)
             {
-                GoInHome();
+                MoveAroundHouse();
                 return;
             }
 
@@ -56,7 +56,7 @@ namespace covidSim.Services
             CalcNextPositionForWalkingPerson();
         }
 
-        private void GoInHome()
+        private void MoveAroundHouse()
         {
             var x = home.Coordinates.LeftTopCorner.X;
             var y = home.Coordinates.LeftTopCorner.Y;
