@@ -1,9 +1,10 @@
 namespace covidSim.Services
 {
-    internal enum PersonState
+    public enum PersonState
     {
         AtHome,
         Walking,
         GoingHome,
+        Dead,
     }
 }

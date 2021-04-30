@@ -8,10 +8,10 @@ namespace covidSim.Services
     {
         private const int MaxDistancePerTurn = 30;
         private static Random random = new Random();
-        private PersonState state = PersonState.AtHome;
         private int inHomeStepsCount = 0;
         private CityMap Map { get; set; }
         private readonly House home;
+        private int timeToLive = 10;
 
         public Person(int id, int homeId, CityMap map)
         {
@@ -24,15 +24,17 @@ namespace covidSim.Services
             var y = homeCoords.Y + random.Next(HouseCoordinates.Height);
             Position = new Vec(x, y);
         }
-
+        
+        public PersonState state = PersonState.AtHome;
         public int Id;
         public int HomeId;
         public Vec Position;
         public bool Infected;
         public bool IsBoring => inHomeStepsCount >= 5;
 
-        public void CalcNextStep()
+        public bool TryCalcNextStep()
         {
+            CalcDeath();
             switch (state)
             {
                 case PersonState.AtHome:
@@ -44,7 +46,25 @@ namespace covidSim.Services
                 case PersonState.GoingHome:
                     CalcNextPositionForGoingHomePerson();
                     break;
+                case PersonState.Dead:
+                    return TryCalcNextPositionForDeadPerson();
             }
+
+            return true;
+        }
+
+        private void CalcDeath()
+        {
+            if (Infected && random.Next(100_000) < 3)
+                state = PersonState.Dead;
+        }
+
+        private bool TryCalcNextPositionForDeadPerson()
+        {
+            if (timeToLive > 0)
+                return false;
+            timeToLive--;
+            return true;
         }
 
         private void CalcNextStepForPersonAtHome()
