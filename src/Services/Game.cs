@@ -69,7 +69,6 @@ namespace covidSim.Services
             _lastUpdate = DateTime.Now;
             foreach (var person in People.ToArray()) {
                 if (!person.TryCalcNextStep()) {
-                    Console.WriteLine("asdasdasdasdasd");
                     People.Remove(person);
                 }
             }
