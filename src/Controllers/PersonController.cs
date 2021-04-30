@@ -18,6 +18,7 @@ namespace covidSim.Controllers
                 return NotFound();
 
             person.Position = position;
+            person.LeftHome();
             return NoContent();
         }
     }

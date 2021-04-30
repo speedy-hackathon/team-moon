@@ -210,5 +210,11 @@ namespace covidSim.Services
 
             return !(belowZero || beyondField);
         }
+
+        public void LeftHome()
+        {
+            state = PersonState.Walking;
+            inHomeStepsCount = 0;
+        }
     }
 }
