@@ -87,12 +87,12 @@ namespace covidSim.Services
 
         private bool IsInHouse(Vec position, House house)
         {
-            var belowUpperLeft = position.X < house.Coordinates.LeftTopCorner.X
+            var outsideUpperLeftAngle = position.X < house.Coordinates.LeftTopCorner.X
                                  || position.Y < house.Coordinates.LeftTopCorner.Y;
-            var aboveBottomRight = position.X > house.Coordinates.LeftTopCorner.X + HouseCoordinates.Width
+            var outsideBottomRightAngle = position.X > house.Coordinates.LeftTopCorner.X + HouseCoordinates.Width
                                    || position.Y > house.Coordinates.LeftTopCorner.Y + HouseCoordinates.Height;
 
-            return !belowUpperLeft && !aboveBottomRight;
+            return !outsideUpperLeftAngle && !outsideBottomRightAngle;
         }
 
         private void CalcNextPositionForGoingHomePerson()
