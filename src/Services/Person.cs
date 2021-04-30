@@ -7,7 +7,6 @@ namespace covidSim.Services
     {
         private const int MaxDistancePerTurn = 20;
         private static Random random = new Random();
-        private PersonState state = PersonState.AtHome;
 
         public Person(int id, int homeId, CityMap map)
         {
@@ -23,10 +22,11 @@ namespace covidSim.Services
         public int Id;
         public int HomeId;
         public Vec Position;
+        public PersonState State = PersonState.AtHome;
 
         public void CalcNextStep()
         {
-            switch (state)
+            switch (State)
             {
                 case PersonState.AtHome:
                     CalcNextStepForPersonAtHome();
@@ -45,7 +45,7 @@ namespace covidSim.Services
             var goingWalk = random.NextDouble() < 0.005;
             if (!goingWalk) return;
 
-            state = PersonState.Walking;
+            State = PersonState.Walking;
             CalcNextPositionForWalkingPerson();
         }
 
@@ -82,7 +82,7 @@ namespace covidSim.Services
             if (distance <= MaxDistancePerTurn)
             {
                 Position = homeCenter;
-                state = PersonState.AtHome;
+                State = PersonState.AtHome;
                 return;
             }
 
@@ -97,9 +97,9 @@ namespace covidSim.Services
 
         public void GoHome()
         {
-            if (state != PersonState.Walking) return;
+            if (State != PersonState.Walking) return;
 
-            state = PersonState.GoingHome;
+            State = PersonState.GoingHome;
             CalcNextPositionForGoingHomePerson();
         }
 
