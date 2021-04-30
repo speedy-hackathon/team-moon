@@ -6,11 +6,9 @@ export default function Person({ person, onClick }) {
   const x = (person.position.x / MAX_WIDTH) * 100;
   const y = (person.position.y / MAX_HEIGHT) * 100;
 
-  //const red = Math.floor(Math.random() * 256);
   const red = person.id * 10 % 256; 
   const green = person.id * 20 % 256;
   const blue = person.id * 80 % 256;
-
 
   const borderThickness = person.id % 2 + 1;
   const borderTypeIndex = person.id % 3;
