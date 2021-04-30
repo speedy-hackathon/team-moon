@@ -3,19 +3,30 @@ import styles from "./styles.module.css";
 import { MAX_HEIGHT, MAX_WIDTH } from "../../consts/sizes";
 
 export default function Person({ person, onClick }) {
+
+  class Border {
+    constructor(id) {
+    this.red = id * 10 % 256; 
+    this.blue = id * 100 % 256;
+    this.green = id * 50 % 256;
+
+    this.borderThickness = id % 3 + 2;
+    this.borderTypeIndex = id % 3;
+    this.borderTypes = ['solid', 'dotted', 'dashed']
+    }
+
+    getBorder=()=> {
+      return `${this.borderThickness}px ${this.borderTypes[this.borderTypeIndex]} rgb(${this.red},${this.green},${this.blue})`
+    }
+  }
+
   const x = (person.position.x / MAX_WIDTH) * 100;
   const y = (person.position.y / MAX_HEIGHT) * 100;
 
-  const red = person.id * 10 % 256; 
-  const green = person.id * 50 % 256;
-  const blue = person.id * 100 % 256;
-
-  const borderThickness = person.id % 3 + 2;
-  const borderTypeIndex = person.id % 3;
-  const borderTypes = ['solid', 'dotted', 'dashed']
-
+  const border = `${new Border(person.id).getBorder()}`
   function getClassName(isInfected, isBoring) {
     let className = `${styles.root}`
+
     if (isInfected && isBoring) {
       className += ` ${styles.boredAndInfected}`
       return className;
@@ -28,10 +39,11 @@ export default function Person({ person, onClick }) {
     }
     return className
   }
+
   return (
     <div
       className = {getClassName(person.infected, person.isBoring)}
-      style={{ left: `${x}%`, top: `${y}%`, border:`${borderThickness}px ${borderTypes[borderTypeIndex]} rgb(${red},${green},${blue})` }}
+      style={{ left: `${x}%`, top: `${y}%`, border: border }}
       onClick={() => onClick(person.id)}
     />
   );
