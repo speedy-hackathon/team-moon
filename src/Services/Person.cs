@@ -32,12 +32,14 @@ namespace covidSim.Services
         public Vec Position;
         public bool Infected;
         public bool IsBoring => inHomeStepsCount >= 5;
+        public bool HasImmunity = false;
 
         public void CalcNextStep()
         {
             if (infectionTurnCount >= 45)
             {
                 Infected = false;
+                HasImmunity = true;
                 infectionTurnCount = 0;
             }
             else if (Infected)
