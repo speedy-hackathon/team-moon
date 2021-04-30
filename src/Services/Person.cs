@@ -31,7 +31,7 @@ namespace covidSim.Services
 
         public void CalcNextStep()
         {
-            switch (State)
+            switch (state)
             {
                 case PersonState.AtHome:
                     CalcNextStepForPersonAtHome();
@@ -54,7 +54,7 @@ namespace covidSim.Services
                 return;
             }
 
-            State = PersonState.Walking;
+            state = PersonState.Walking;
             CalcNextPositionForWalkingPerson();
         }
 
@@ -126,7 +126,7 @@ namespace covidSim.Services
             if (distance <= MaxDistancePerTurn)
             {
                 Position = homeCenter;
-                State = PersonState.AtHome;
+                state = PersonState.AtHome;
                 return;
             }
 
@@ -141,9 +141,9 @@ namespace covidSim.Services
 
         public void GoHome()
         {
-            if (State != PersonState.Walking) return;
+            if (state != PersonState.Walking) return;
 
-            State = PersonState.GoingHome;
+            state = PersonState.GoingHome;
             CalcNextPositionForGoingHomePerson();
         }
 
