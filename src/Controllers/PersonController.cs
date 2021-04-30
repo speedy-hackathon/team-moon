@@ -12,8 +12,11 @@ namespace covidSim.Controllers
         {
             var game = Game.Instance;
             var person = game.People.Find(p => p.Id == id);
+            if (position.X < 0 || position.Y < 0 || position.X > Game.FieldWidth || position.Y > Game.FieldHeight)
+                return UnprocessableEntity();
             if (person == null)
-                return NoContent();
+                return NotFound();
+
             person.Position = position;
             return NoContent();
         }
