@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using covidSim.Models;
 
@@ -29,15 +30,29 @@ namespace covidSim.Services
 
         public int Id;
         public int HomeId;
-        public Vec Position;
+        public readonly List<Vec> PathFromSimStart = new List<Vec>();
+        private Vec position;
+
+        public Vec Position
+        {
+            get => position;
+            set
+            {
+                PathFromSimStart.Add(value);
+                position = value;
+            }
+        }
+
         public bool Infected;
         public bool IsBoring => inHomeStepsCount >= 5;
+        public bool HasImmunity = false;
 
         public void CalcNextStep()
         {
             if (infectionTurnCount >= 45)
             {
                 Infected = false;
+                HasImmunity = true;
                 infectionTurnCount = 0;
             }
             else if (Infected)
@@ -61,6 +76,8 @@ namespace covidSim.Services
 
         public void AttemptInfectBy(Person infective)
         {
+            if (HasImmunity)
+                return;
             if (state != PersonState.Walking || infective.state != PersonState.Walking)
                 return;
             if (Position.GetDistance(infective.Position) > 7)
