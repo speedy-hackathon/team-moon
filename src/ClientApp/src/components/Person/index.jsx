@@ -25,12 +25,7 @@ export default function Person({ person, onClick }) {
   const y = (person.position.y / MAX_HEIGHT) * 100;
 
   const border = `${new Border(person.id).getBorder()}`
-  const clickHandle = (e) => {
-    e.stopPropagation();
-    onClick(person.id)
-  }
-  
- function getClassName(isInfected, isBoring, hasImmunity) {
+  function getClassName(isInfected, isBoring) {
     let className = `${styles.root}`
 
     if (isInfected && isBoring) {
@@ -43,18 +38,14 @@ export default function Person({ person, onClick }) {
     if (isBoring) {
       className += ` ${styles.bored}`
     }
-    if (hasImmunity) {
-      className += ` ${styles.immunity}`
-    }
     return className
   }
-    
-  
+
   return (
     <div
-      className = {getClassName(person.infected, person.isBoring, person.hasImmunity)}
-      style={{ left: `${x}%`, top: `${y}%` }}
-      onClick={clickHandle}
+      className = {getClassName(person.infected, person.isBoring)}
+      style={{ left: `${x}%`, top: `${y}%`, border: border }}
+      onClick={() => onClick(person.id)}
     />
   );
 }
