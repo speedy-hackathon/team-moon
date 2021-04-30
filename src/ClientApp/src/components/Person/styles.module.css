@@ -10,3 +10,15 @@
   border-radius: 50%;
   transition: all 1s linear;
 }
+
+.atHome{
+  background-color: blue;
+}
+
+.walking{
+  background-color: green;
+}
+
+.goingHome{
+  background-color: yellow;
+}

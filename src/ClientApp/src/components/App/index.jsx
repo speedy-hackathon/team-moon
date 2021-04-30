@@ -30,7 +30,7 @@ export default class App extends React.Component {
     return (
       <div className={styles.root}>
         {instructionOpen && <Instruction onClose={this.closeInstruction} />}
-        <h1 className={styles.title}>COVID-симулятор</h1>
+        <h1 className={styles.title}>Симулятор COVID</h1>
         <Field map={map} people={people} onClick={this.personClick} />
       </div>
     );
@@ -63,6 +63,7 @@ export default class App extends React.Component {
       .then(errorHandler)
       .then((res) => res.json())
       .then((game) => {
+        console.log(game)
         this.setState({
           people: game.people,
           map: game.map.houses.map((i) => i.coordinates.leftTopCorner),
