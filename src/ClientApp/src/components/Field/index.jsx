@@ -2,10 +2,15 @@ import React from "react";
 import styles from "./styles.module.css";
 import Person from "../Person";
 import House from "../House";
+import { PersonPath } from "../PersonPath";
 
-export default function Field({ map, people, onClick }) {
+export default function Field({ map, people, onClick, onFiledClick, activePerson }) {
   return (
-    <div className={styles.root}>
+    <div className={styles.root} onClick={onFiledClick}>
+      {
+        activePerson &&
+        <PersonPath path={activePerson.pathFromSimStart}/>
+      } 
       {map.map((item, i) => (
         <House key={i} x={item.x} y={item.y} />
       ))}

@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./style.module.css";
 import Field from "../Field";
 import { DELAY, MAX_HEIGHT, MAX_WIDTH } from "../../consts/sizes";
-import { gameStateUrl, userActionUrl } from "../../consts/urls";
+import { gameStateUrl, userActionUrl, resetActivePerson } from "../../consts/urls";
 import errorHandler from "../../utils/errorHandler";
 import Instruction from "../Instruction";
 
@@ -14,6 +14,7 @@ export default class App extends React.Component {
     this.state = {
       people: [],
       map: [],
+      activePerson: null,
       instructionOpen: true,
     };
     this.intervalId = null;
@@ -26,12 +27,12 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { people, map, instructionOpen } = this.state;
+    const { people, map, instructionOpen, activePerson } = this.state;
     return (
       <div className={styles.root}>
         {instructionOpen && <Instruction onClose={this.closeInstruction} />}
         <h1 className={styles.title}>Симулятор COVID</h1>
-        <Field map={map} people={people} onClick={this.personClick} />
+        <Field map={map} people={people} activePerson={activePerson} onFiledClick={this.fieldClick} onClick={this.personClick} />
       </div>
     );
   }
@@ -58,6 +59,18 @@ export default class App extends React.Component {
     }).then(errorHandler);
   };
 
+  fieldClick = () => {
+    const {activePerson} = this.state;
+    if(activePerson) {
+      fetch(resetActivePerson, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then(errorHandler);
+    }
+  };
+
   getNewStateFromServer = () => {
     fetch(gameStateUrl)
       .then(errorHandler)
@@ -66,6 +79,7 @@ export default class App extends React.Component {
         this.setState({
           people: game.people,
           map: game.map.houses.map((i) => i.coordinates.leftTopCorner),
+          activePerson: game.activePerson
         });
       });
   };
