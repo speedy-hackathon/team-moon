@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import styles from "./styles.module.css";
 import Person from "../Person";
 import House from "../House";
@@ -7,18 +7,19 @@ import { PersonPath } from "../PersonPath";
 export default function Field({ map, people, onClick,  onFieldClick, activePerson }) {
   const [offsets, setOffsets] = useState(null);
   const [isGodMode, setGodMode] = useState(false);
+  const containerRef = useRef(null)
 
-  const seContainerOffsets = (el) => {
-    if (el && !offsets) {
-      const {width, height} = el.getBoundingClientRect();
-      setOffsets([
-        el.offsetLeft,
-        el.offsetTop,
-        width,
-        height,
-      ])
-    }
-  };
+  useEffect(() => {
+    const el = containerRef.current;
+    const {width, height} = el.getBoundingClientRect();
+
+    setOffsets([
+      el.offsetLeft,
+      el.offsetTop,
+      width,
+      height,
+    ])
+  });
 
   const onGodModeChange = (event) => {
     setGodMode(event.target.checked)
@@ -31,7 +32,7 @@ export default function Field({ map, people, onClick,  onFieldClick, activePerso
         <label htmlFor='godMode'>Режим Бога</label>
       </div>
 
-      <div className={styles.root} ref={seContainerOffsets} onClick={onFieldClick}>
+      <div className={styles.root} ref={el => containerRef.current = el} onClick={onFieldClick}>
         {
           activePerson &&
           <PersonPath path={activePerson.pathFromSimStart}/>
