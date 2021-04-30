@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./style.module.css";
 import Field from "../Field";
 import { DELAY, MAX_HEIGHT, MAX_WIDTH } from "../../consts/sizes";
-import { gameStateUrl, userActionUrl } from "../../consts/urls";
+import { gameStateUrl, userActionUrl, gameRestartUrl } from "../../consts/urls";
 import errorHandler from "../../utils/errorHandler";
 import Instruction from "../Instruction";
 
@@ -60,7 +60,7 @@ export default class App extends React.Component {
   };
 
   restartButtonClick = () => {
-    fetch(gameStateUrl, {
+    fetch(gameRestartUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
