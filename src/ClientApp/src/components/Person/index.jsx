@@ -17,6 +17,8 @@ export default function Person({ person, onClick }) {
     if (isBoring) {
       className += ` ${styles.bored}`
     }
+    if (person.state === "Dead")
+      return className += ` ${styles.dead}`
     return className
     
 
