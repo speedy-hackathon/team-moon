@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using covidSim.Models;
 
 namespace covidSim.Services
@@ -9,12 +10,13 @@ namespace covidSim.Services
         private static Random random = new Random();
         private readonly House home;
         private PersonState State = PersonState.AtHome;
+        private readonly List<Vec> pathFromSimStart = new List<Vec>();
 
         public Person(int id, int homeId, CityMap map)
         {
             Id = id;
             HomeId = homeId;
-
+s
             var homeCoords = map.Houses[homeId].Coordinates.LeftTopCorner;
             home = map.Houses[homeId];
             var x = homeCoords.X + random.Next(HouseCoordinates.Width);
@@ -24,7 +26,19 @@ namespace covidSim.Services
 
         public int Id;
         public int HomeId;
-        public Vec Position;
+
+        private Vec position;
+
+        public Vec Position
+        {
+            get => position;
+            set
+            {
+                pathFromSimStart.Add(value);
+                position = value;
+            }
+        }
+
         public bool Infected;
 
         public void CalcNextStep()
@@ -87,7 +101,8 @@ namespace covidSim.Services
         {
             var game = Game.Instance;
             var homeCoord = game.Map.Houses[HomeId].Coordinates.LeftTopCorner;
-            var homeCenter = new Vec(homeCoord.X + HouseCoordinates.Width / 2, homeCoord.Y + HouseCoordinates.Height / 2);
+            var homeCenter = new Vec(homeCoord.X + HouseCoordinates.Width / 2,
+                homeCoord.Y + HouseCoordinates.Height / 2);
 
             var xDiff = homeCenter.X - Position.X;
             var yDiff = homeCenter.Y - Position.Y;
@@ -104,7 +119,7 @@ namespace covidSim.Services
 
             var direction = new Vec(Math.Sign(xDiff), Math.Sign(yDiff));
 
-            var xLength = Math.Min(xDistance, MaxDistancePerTurn); 
+            var xLength = Math.Min(xDistance, MaxDistancePerTurn);
             var newX = Position.X + xLength * direction.X;
             var yLength = MaxDistancePerTurn - xLength;
             var newY = Position.Y + yLength * direction.Y;
