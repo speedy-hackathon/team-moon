@@ -7,10 +7,10 @@ export default function Person({ person, onClick }) {
   const y = (person.position.y / MAX_HEIGHT) * 100;
 
   const red = person.id * 10 % 256; 
-  const green = person.id * 20 % 256;
-  const blue = person.id * 80 % 256;
+  const green = person.id * 50 % 256;
+  const blue = person.id * 100 % 256;
 
-  const borderThickness = person.id % 2 + 1;
+  const borderThickness = person.id % 3 + 2;
   const borderTypeIndex = person.id % 3;
   const borderTypes = ['solid', 'dotted', 'dashed']
 
