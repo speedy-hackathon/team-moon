@@ -62,9 +62,12 @@ namespace covidSim.Services
         private bool TryCalcNextPositionForDeadPerson()
         {
             if (timeToLive > 0)
-                return false;
-            timeToLive--;
-            return true;
+            {
+                timeToLive--;
+                return true;
+            }
+
+            return false;
         }
 
         private void CalcNextStepForPersonAtHome()
