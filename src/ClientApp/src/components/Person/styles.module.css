@@ -22,6 +22,10 @@
 .boredAndInfected {
   background-color: purple;
 }
+
+.dead {
+  background-color: black;
+}
 .immunity {
   background-color: brown;
 }

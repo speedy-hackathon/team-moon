@@ -70,9 +70,10 @@ namespace covidSim.Services
         {
             _lastUpdate = DateTime.Now;
             Infect();
-            foreach (var person in People)
-            {
-                person.CalcNextStep();
+            foreach (var person in People.ToArray()) {
+                if (!person.TryCalcNextStep()) {
+                    People.Remove(person);
+                }
             }
         }
 
