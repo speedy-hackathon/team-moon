@@ -84,20 +84,15 @@ namespace covidSim.Services
                     var person2 = People[j];
                     if (InfectedCount(person1, person2) != 1)
                         continue;
-                    if (person2.Infected)
-                        Swap(ref person1, ref person2);
-                    person2.AttemptInfectBy(person1);
+                    if (person1.Infected)
+                        person2.AttemptInfectBy(person1);
+                    else
+                        person1.AttemptInfectBy(person2);
+                    
                 }
             }
         }
 
-        private static void Swap<T>(ref T first, ref T second)
-        {
-            var temp = first;
-            first = second;
-            second = temp;
-        }
-        
         private int InfectedCount(params Person[] people)
         {
             var result = 0;
