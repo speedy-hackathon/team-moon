@@ -24,7 +24,7 @@ export default function Person({ person, onClick }) {
   const x = (person.position.x / MAX_WIDTH) * 100;
   const y = (person.position.y / MAX_HEIGHT) * 100;
 
-  const border = `${new Border(person.id).getBorder()}`
+  const border = new Border(person.id).getBorder()
   function getClassName(isInfected, isBoring) {
     let className = `${styles.root}`
 
