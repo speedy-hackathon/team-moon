@@ -63,6 +63,8 @@ namespace covidSim.Services
 
         public void AttemptInfectBy(Person infective)
         {
+            if (HasImmunity)
+                return;
             if (state != PersonState.Walking || infective.state != PersonState.Walking)
                 return;
             if (Position.GetDistance(infective.Position) > 7)
