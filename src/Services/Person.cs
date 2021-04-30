@@ -10,13 +10,12 @@ namespace covidSim.Services
         private static Random random = new Random();
         private readonly House home;
         private PersonState State = PersonState.AtHome;
-        private readonly List<Vec> pathFromSimStart = new List<Vec>();
 
         public Person(int id, int homeId, CityMap map)
         {
             Id = id;
             HomeId = homeId;
-s
+
             var homeCoords = map.Houses[homeId].Coordinates.LeftTopCorner;
             home = map.Houses[homeId];
             var x = homeCoords.X + random.Next(HouseCoordinates.Width);
@@ -26,7 +25,7 @@ s
 
         public int Id;
         public int HomeId;
-
+        public readonly List<Vec> PathFromSimStart = new List<Vec>();
         private Vec position;
 
         public Vec Position
@@ -34,7 +33,7 @@ s
             get => position;
             set
             {
-                pathFromSimStart.Add(value);
+                PathFromSimStart.Add(value);
                 position = value;
             }
         }

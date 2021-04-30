@@ -8,6 +8,7 @@ namespace covidSim.Services
     {
         public List<Person> People;
         public CityMap Map;
+        public Person ActivePerson;
         private DateTime _lastUpdate;
 
         private static Game _gameInstance;
