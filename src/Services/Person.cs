@@ -59,6 +59,15 @@ namespace covidSim.Services
             }
         }
 
+        public void AttemptInfectBy(Person infective)
+        {
+            if (state != PersonState.Walking || infective.state != PersonState.Walking)
+                return;
+            if (Position.GetDistance(infective.Position) > 7)
+                return;
+            Infected =  random.Next(2) > 0;
+        }
+
         private void CalcNextStepForPersonAtHome()
         {
             inHomeStepsCount++;
