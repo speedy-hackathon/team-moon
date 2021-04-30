@@ -8,6 +8,7 @@ namespace covidSim.Services
         private const int MaxDistancePerTurn = 30;
         private static Random random = new Random();
         private readonly House home;
+        private PersonState State = PersonState.AtHome;
 
         public Person(int id, int homeId, CityMap map)
         {
@@ -24,7 +25,6 @@ namespace covidSim.Services
         public int Id;
         public int HomeId;
         public Vec Position;
-        public PersonState State = PersonState.AtHome;
         public bool Infected;
 
         public void CalcNextStep()
