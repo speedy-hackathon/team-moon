@@ -67,10 +67,47 @@ namespace covidSim.Services
         private void CalcNextStep()
         {
             _lastUpdate = DateTime.Now;
+            Infect();
             foreach (var person in People)
             {
                 person.CalcNextStep();
             }
+        }
+
+        private void Infect()
+        {
+            for (var i = 0; i < PeopleCount; i++)
+            {
+                for (var j = i + 1; j < PeopleCount; j++)
+                {
+                    var person1 = People[i];
+                    var person2 = People[j];
+                    if (InfectedCount(person1, person2) != 1)
+                        continue;
+                    if (person2.Infected)
+                        Swap(ref person1, ref person2);
+                    person2.AttemptInfectBy(person1);
+                }
+            }
+        }
+
+        private static void Swap<T>(ref T first, ref T second)
+        {
+            var temp = first;
+            first = second;
+            second = temp;
+        }
+        
+        private int InfectedCount(params Person[] people)
+        {
+            var result = 0;
+            foreach (var person in people)
+            {
+                if (person.Infected)
+                    result++;
+            }
+
+            return result;
         }
     }
 }
