@@ -45,12 +45,14 @@ namespace covidSim.Services
 
         public bool Infected;
         public bool IsBoring => inHomeStepsCount >= 5;
+        public bool HasImmunity = false;
 
         public void CalcNextStep()
         {
             if (infectionTurnCount >= 45)
             {
                 Infected = false;
+                HasImmunity = true;
                 infectionTurnCount = 0;
             }
             else if (Infected)
@@ -74,6 +76,8 @@ namespace covidSim.Services
 
         public void AttemptInfectBy(Person infective)
         {
+            if (HasImmunity)
+                return;
             if (state != PersonState.Walking || infective.state != PersonState.Walking)
                 return;
             if (Position.GetDistance(infective.Position) > 7)
