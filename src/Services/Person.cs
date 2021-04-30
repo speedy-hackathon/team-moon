@@ -5,7 +5,7 @@ namespace covidSim.Services
 {
     public class Person
     {
-        private const int MaxDistancePerTurn = 20;
+        private const int MaxDistancePerTurn = 30;
         private static Random random = new Random();
         private readonly House home;
 
@@ -25,6 +25,7 @@ namespace covidSim.Services
         public int HomeId;
         public Vec Position;
         public PersonState State = PersonState.AtHome;
+        public bool Infected;
 
         public void CalcNextStep()
         {
