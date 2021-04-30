@@ -23,6 +23,7 @@ namespace covidSim.Services
         public int Id;
         public int HomeId;
         public Vec Position;
+        public bool Infected;
 
         public void CalcNextStep()
         {
