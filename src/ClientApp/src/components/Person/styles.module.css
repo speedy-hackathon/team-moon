@@ -14,3 +14,11 @@
 .infected {
   background-color: #f00;
 }
+
+.bored {
+  background-color: blue;
+}
+
+.boredAndInfected {
+  background-color: purple;
+}
