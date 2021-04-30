@@ -18,6 +18,11 @@ namespace covidSim.Controllers
         public IActionResult ResetActivePerson()
         {
             Game.Instance.ActivePerson = null;
+        
+        [HttpPost("restart")]
+        public IActionResult Restart()
+        {
+            Game.Restart();
             return NoContent();
         }
     }

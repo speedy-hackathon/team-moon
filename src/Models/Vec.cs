@@ -1,3 +1,5 @@
+using System;
+
 namespace covidSim.Models
 {
     public class Vec
@@ -10,5 +12,12 @@ namespace covidSim.Models
 
         public readonly int X;
         public readonly int Y;
+
+        public double GetDistance(Vec other)
+        {
+            var x = other.X - X;
+            var y = other.Y - Y;
+            return Math.Sqrt(x * x + y * y);
+        }
     }
 }
