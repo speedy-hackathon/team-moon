@@ -12,6 +12,7 @@ namespace covidSim.Controllers
         {
             var game = Game.Instance;
             var person = game.People.Find(p => p.Id == userAction.PersonClicked);
+            game.ActivePerson = person;
             person.GoHome();
             return NoContent();
         }

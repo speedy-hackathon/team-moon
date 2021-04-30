@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using covidSim.Models;
 
@@ -12,6 +13,7 @@ namespace covidSim.Services
         private CityMap Map { get; set; }
         private readonly House home;
         private int timeToLive = 10;
+        private int infectionTurnCount;
 
         public Person(int id, int homeId, CityMap map)
         {
@@ -23,18 +25,43 @@ namespace covidSim.Services
             var x = homeCoords.X + random.Next(HouseCoordinates.Width);
             var y = homeCoords.Y + random.Next(HouseCoordinates.Height);
             Position = new Vec(x, y);
+            infectionTurnCount = 0;
         }
         
         public PersonState state = PersonState.AtHome;
         public int Id;
         public int HomeId;
-        public Vec Position;
+        public readonly List<Vec> PathFromSimStart = new List<Vec>();
+        private Vec position;
+
+        public Vec Position
+        {
+            get => position;
+            set
+            {
+                PathFromSimStart.Add(value);
+                position = value;
+            }
+        }
+
         public bool Infected;
         public bool IsBoring => inHomeStepsCount >= 5;
+        public bool HasImmunity = false;
 
         public bool TryCalcNextStep()
         {
             CalcDeath();
+            if (infectionTurnCount >= 45)
+            {
+                Infected = false;
+                HasImmunity = true;
+                infectionTurnCount = 0;
+            }
+            else if (Infected)
+            {
+                infectionTurnCount++;
+            }
+            
             switch (state)
             {
                 case PersonState.AtHome:
@@ -68,6 +95,17 @@ namespace covidSim.Services
             }
 
             return false;
+        }
+
+        public void AttemptInfectBy(Person infective)
+        {
+            if (HasImmunity)
+                return;
+            if (state != PersonState.Walking || infective.state != PersonState.Walking)
+                return;
+            if (Position.GetDistance(infective.Position) > 7)
+                return;
+            Infected =  random.Next(2) > 0;
         }
 
         private void CalcNextStepForPersonAtHome()

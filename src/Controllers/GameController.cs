@@ -13,5 +13,19 @@ namespace covidSim.Controllers
             game = game.GetNextState();
             return Ok(game);
         }
+
+        [HttpPost("reset-active-person")]
+        public IActionResult ResetActivePerson()
+        {
+            Game.Instance.ActivePerson = null;
+            return NoContent();
+        }
+
+        [HttpPost("restart")]
+        public IActionResult Restart()
+        {
+            Game.Restart();
+            return NoContent();
+        }
     }
 }

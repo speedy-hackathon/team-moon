@@ -8,6 +8,7 @@ namespace covidSim.Services
     {
         public List<Person> People;
         public CityMap Map;
+        public Person ActivePerson;
         private DateTime _lastUpdate;
 
         private static Game _gameInstance;
@@ -26,6 +27,7 @@ namespace covidSim.Services
         }
 
         public static Game Instance => _gameInstance ?? (_gameInstance = new Game());
+        public static void Restart() => _gameInstance = new Game();
 
         private List<Person> CreatePopulation()
         {
@@ -67,11 +69,43 @@ namespace covidSim.Services
         private void CalcNextStep()
         {
             _lastUpdate = DateTime.Now;
+            Infect();
             foreach (var person in People.ToArray()) {
                 if (!person.TryCalcNextStep()) {
                     People.Remove(person);
                 }
             }
+        }
+
+        private void Infect()
+        {
+            for (var i = 0; i < PeopleCount; i++)
+            {
+                for (var j = i + 1; j < PeopleCount; j++)
+                {
+                    var person1 = People[i];
+                    var person2 = People[j];
+                    if (InfectedCount(person1, person2) != 1)
+                        continue;
+                    if (person1.Infected)
+                        person2.AttemptInfectBy(person1);
+                    else
+                        person1.AttemptInfectBy(person2);
+                    
+                }
+            }
+        }
+
+        private int InfectedCount(params Person[] people)
+        {
+            var result = 0;
+            foreach (var person in people)
+            {
+                if (person.Infected)
+                    result++;
+            }
+
+            return result;
         }
     }
 }

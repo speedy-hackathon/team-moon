@@ -23,6 +23,9 @@
   background-color: purple;
 }
 
-.dead{
+.dead {
   background-color: black;
+}
+.immunity {
+  background-color: brown;
 }
