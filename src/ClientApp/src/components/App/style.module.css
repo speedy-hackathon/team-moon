@@ -6,3 +6,7 @@
   font-weight: normal;
   text-align: center;
 }
+
+.restartButton {
+  margin: 0 40px 20px;
+}
