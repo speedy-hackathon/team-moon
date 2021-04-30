@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using covidSim.Models;
 
 namespace covidSim.Services
@@ -8,12 +9,13 @@ namespace covidSim.Services
         private const int MaxDistancePerTurn = 30;
         private static Random random = new Random();
         private PersonState state = PersonState.AtHome;
+        private CityMap Map { get; set; }
 
         public Person(int id, int homeId, CityMap map)
         {
             Id = id;
             HomeId = homeId;
-
+            Map = map;
             var homeCoords = map.Houses[homeId].Coordinates.LeftTopCorner;
             var x = homeCoords.X + random.Next(HouseCoordinates.Width);
             var y = homeCoords.Y + random.Next(HouseCoordinates.Height);
@@ -57,7 +59,7 @@ namespace covidSim.Services
             var delta = new Vec(xLength * direction.X, yLength * direction.Y);
             var nextPosition = new Vec(Position.X + delta.X, Position.Y + delta.Y);
 
-            if (isCoordInField(nextPosition))
+            if (isCoordInField(nextPosition) && !IsInForeignHome(nextPosition))
             {
                 Position = nextPosition;
             }
@@ -65,6 +67,32 @@ namespace covidSim.Services
             {
                 CalcNextPositionForWalkingPerson();
             }
+        }
+
+        private bool IsInForeignHome(Vec position)
+        {
+            var insideForeignHome = false;
+            for (var i = 0; i < Map.Houses.Length; i++)
+            {
+                if (i == HomeId)
+                    continue;
+
+                var foreignHouse = Map.Houses[i];
+                if (IsInHouse(position, foreignHouse))
+                    insideForeignHome = true;
+            }
+
+            return insideForeignHome;
+        }
+
+        private bool IsInHouse(Vec position, House house)
+        {
+            var belowUpperLeft = position.X < house.Coordinates.LeftTopCorner.X
+                                 || position.Y < house.Coordinates.LeftTopCorner.Y;
+            var aboveBottomRight = position.X > house.Coordinates.LeftTopCorner.X + HouseCoordinates.Width
+                                   || position.Y > house.Coordinates.LeftTopCorner.Y + HouseCoordinates.Height;
+
+            return !belowUpperLeft && !aboveBottomRight;
         }
 
         private void CalcNextPositionForGoingHomePerson()
