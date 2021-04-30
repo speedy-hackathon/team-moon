@@ -25,6 +25,7 @@ namespace covidSim.Services
         public int HomeId;
         public Vec Position;
         public PersonState State = PersonState.AtHome;
+        public bool Infected;
 
         public void CalcNextStep()
         {
