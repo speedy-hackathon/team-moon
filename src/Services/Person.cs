@@ -59,8 +59,8 @@ namespace covidSim.Services
         {
             var x = home.Coordinates.LeftTopCorner.X;
             var y = home.Coordinates.LeftTopCorner.Y;
-            var newX = random.Next(x, HouseCoordinates.Width);
-            var newY = random.Next(y, HouseCoordinates.Height);
+            var newX = random.Next(x, x + HouseCoordinates.Width);
+            var newY = random.Next(y, y + HouseCoordinates.Height);
             Position = new Vec(newX, newY);
         }
 
