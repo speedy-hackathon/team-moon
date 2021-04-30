@@ -10,9 +10,12 @@ export default function Field({ map, people, onClick,  onFieldClick, activePerso
 
   const seContainerOffsets = (el) => {
     if (el && !offsets) {
+      const {width, height} = el.getBoundingClientRect();
       setOffsets([
         el.offsetLeft,
-        el.offsetTop
+        el.offsetTop,
+        width,
+        height,
       ])
     }
   };
