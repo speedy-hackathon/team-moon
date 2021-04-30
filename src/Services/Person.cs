@@ -9,6 +9,7 @@ namespace covidSim.Services
         private static Random random = new Random();
         private readonly House home;
         private PersonState State = PersonState.AtHome;
+        private int infectionTurnCount;
 
         public Person(int id, int homeId, CityMap map)
         {
@@ -20,6 +21,7 @@ namespace covidSim.Services
             var x = homeCoords.X + random.Next(HouseCoordinates.Width);
             var y = homeCoords.Y + random.Next(HouseCoordinates.Height);
             Position = new Vec(x, y);
+            infectionTurnCount = 0;
         }
 
         public int Id;
@@ -29,6 +31,16 @@ namespace covidSim.Services
 
         public void CalcNextStep()
         {
+            if (infectionTurnCount >= 45)
+            {
+                Infected = false;
+                infectionTurnCount = 0;
+            }
+            else if (Infected)
+            {
+                infectionTurnCount++;
+            }
+            
             switch (State)
             {
                 case PersonState.AtHome:
