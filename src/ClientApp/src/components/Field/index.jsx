@@ -19,7 +19,7 @@ export default function Field({ map, people, onClick,  onFieldClick, activePerso
       width,
       height,
     ])
-  });
+  }, []);
 
   const onGodModeChange = (event) => {
     setGodMode(event.target.checked)
