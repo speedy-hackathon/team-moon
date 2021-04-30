@@ -4,9 +4,9 @@ import Person from "../Person";
 import House from "../House";
 import { PersonPath } from "../PersonPath";
 
-export default function Field({ map, people, onClick, onFiledClick, activePerson }) {
+export default function Field({ map, people, onClick,  onFieldClick, activePerson }) {
   return (
-    <div className={styles.root} onClick={onFiledClick}>
+    <div className={styles.root} onClick={onFieldClick}>
       {
         activePerson &&
         <PersonPath path={activePerson.pathFromSimStart}/>
