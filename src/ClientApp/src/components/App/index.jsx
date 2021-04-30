@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./style.module.css";
 import Field from "../Field";
 import { DELAY, MAX_HEIGHT, MAX_WIDTH } from "../../consts/sizes";
-import { gameStateUrl, userActionUrl } from "../../consts/urls";
+import { gameStateUrl, restartUrl, userActionUrl } from "../../consts/urls";
 import errorHandler from "../../utils/errorHandler";
 import Instruction from "../Instruction";
 
@@ -31,6 +31,7 @@ export default class App extends React.Component {
       <div className={styles.root}>
         {instructionOpen && <Instruction onClose={this.closeInstruction} />}
         <h1 className={styles.title}>Симулятор COVID</h1>
+        <button className={styles.restartButton} onClick={this.restartButtonClick}>Начать сначала</button>
         <Field map={map} people={people} onClick={this.personClick} />
       </div>
     );
@@ -58,12 +59,21 @@ export default class App extends React.Component {
     }).then(errorHandler);
   };
 
+  restartButtonClick = () => {
+    fetch(restartUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then(errorHandler);
+  };
+  
+
   getNewStateFromServer = () => {
     fetch(gameStateUrl)
       .then(errorHandler)
       .then((res) => res.json())
       .then((game) => {
-        console.log(game)
         this.setState({
           people: game.people,
           map: game.map.houses.map((i) => i.coordinates.leftTopCorner),
